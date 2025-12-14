@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<header class="masthead mb-0" style="background-image: url('{{ url_for('static', filename='img/login.png') }}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>Search Inventory</h1>
+          <span class="subheading">Add or search medicines and products</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show m-3" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span>&times;</span>
+  </button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="container mt-4">
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+  <a href="/items" class="btn btn-warning">Medicines List</a>
+  <a href="/items2" class="btn btn-warning ml-2">Products List</a>
+
+  <form class="form-inline ml-auto" action="/search" method="post">
+    <input class="form-control mr-2" name="search" type="text" placeholder="Search item" required>
+    <button class="btn btn-outline-success" type="submit">Search</button>
+  </form>
+</nav>
+
+<h4>Add New Medicine</h4>
+<form action="/addmp" method="post" class="mb-4">
+  <div class="form-group col-md-4 p-0">
+    <input type="text" class="form-control" name="medicine" placeholder="Medicine name" required>
+  </div>
+  <button class="btn btn-primary">Add Medicine</button>
+</form>
+
+<h4>Add New Product</h4>
+<form action="/addpd" method="post">
+  <div class="form-group col-md-4 p-0">
+    <input type="text" class="form-control" name="product" placeholder="Product name" required>
+  </div>
+  <button class="btn btn-primary">Add Product</button>
+</form>
+
+</div>
+
+{% endblock %}

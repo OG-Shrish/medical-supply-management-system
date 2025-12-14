@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/contact-bg.jpg') }}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>Stored Inventory Records</h1>
+          <span class="subheading">Medical inventory data</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container mt-4">
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Medical ID</th>
+        <th>Medicines</th>
+        <th>Products</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td>{{ post.mid }}</td>
+        <td>{{ post.medicines }}</td>
+        <td>{{ post.products }}</td>
+        <td>{{ post.amount }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+``

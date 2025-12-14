@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Login</title>
+
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        crossorigin="anonymous">
+
+  <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show m-3" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span>&times;</span>
+  </button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form class="form-signin" action="/login" method="post">
+
+  <h3 class="mb-4">
+    <span class="badge badge-dark">LOGIN</span>
+  </h3>
+
+  <input type="text"
+         name="uname"
+         class="form-control mb-2"
+         placeholder="Username"
+         required autofocus>
+
+  <input type="password"
+         name="password"
+         class="form-control mb-3"
+         placeholder="Password"
+         required>
+
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox"> Remember me
+    </label>
+  </div>
+
+  <button class="btn btn-lg btn-dark btn-block" type="submit">
+    Sign in
+  </button>
+
+  <p class="mt-3 mb-2 text-muted">
+    DONE BY: SHRISH
+  </p>
+
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

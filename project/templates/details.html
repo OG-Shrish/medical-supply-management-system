@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/bg1.jpg') }}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          <h1>Activity Logs</h1>
+          <h2 class="subheading">Medical record actions</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container mt-4">
+  <a href="/sp" class="btn btn-danger mb-3">
+    View Stored Inventory Records
+  </a>
+
+  <p>All insert, update, and delete actions are recorded below.</p>
+
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Medical ID</th>
+        <th>Action</th>
+        <th>Date & Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td>{{ post.mid }}</td>
+        <td>{{ post.action }}</td>
+        <td>{{ post.date }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

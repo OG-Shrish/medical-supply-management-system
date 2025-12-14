@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/bg1.jpg') }}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>Available Medicines</h1>
+          <span class="subheading">Medicine master list</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container mt-4">
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>S.No</th>
+        <th>Medicine Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td>{{ post.sno }}</td>
+        <td>{{ post.medicine }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

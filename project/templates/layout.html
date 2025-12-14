@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{ params['blog_name'] }}</title>
+
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/clean-blog.min.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/login">{{ params['blog_name'] }}</a>
+
+    <div class="collapse navbar-collapse show">
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/insert">Add Medical Info</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/list">Customer Orders</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/medicines">Order Medicines</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/details">Activity Logs</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/search">Search / Add Items</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link"
+             onclick="return confirm('Are you sure you want to logout?');"
+             href="/logout">Logout</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% block body %}{% endblock %}
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto text-center">
+        <p class="copyright text-muted">
+          © Medical Supply Management System
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/clean-blog.min.js') }}"></script>
+
+</body>
+</html>

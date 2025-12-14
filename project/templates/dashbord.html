@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<header class="masthead mb-0" style="background-image: url('{{ url_for('static', filename='img/md2.jpg') }}')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="site-heading">
+          <h1>{{ params['headname'] }}</h1>
+          <span class="subheading">
+            Welcome! <br>
+            You are logged in as {{ params['user'] }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span>&times;</span>
+  </button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="container">
+  <h2 class="mt-4">
+    <span class="badge badge-warning">MEDICAL RECORDS</span>
+  </h2>
+
+  <p>Medical management information stored here.</p>
+
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th>Mid</th>
+        <th>Medical Shop Name</th>
+        <th>Owner Name</th>
+        <th>Phone No</th>
+        <th>Address</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td>{{ post.mid }}</td>
+        <td>{{ post.medical_name }}</td>
+        <td>{{ post.owner_name }}</td>
+        <td>{{ post.phone_no }}</td>
+        <td>{{ post.address }}</td>
+        <td>
+          <a href="/edit/{{ post.mid }}" class="btn btn-primary btn-sm">Edit</a>
+        </td>
+        <td>
+          <a href="/delete/{{ post.mid }}"
+             onclick="return confirm('Are you sure you want to delete?');"
+             class="btn btn-danger btn-sm">
+             Delete
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
