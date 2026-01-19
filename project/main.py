@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
+import pymysql
+pymysql.install_as_MySQLdb()
+
 import json
 
 with open('config.json', 'r') as c:
@@ -38,13 +41,6 @@ class Addmp(db.Model):
 class Addpd(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     product = db.Column(db.String(200), nullable=False)
-
-
-class Logs(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    mid = db.Column(db.String(120), nullable=True)
-    action = db.Column(db.String(30), nullable=False)
-    date = db.Column(db.String(100), nullable=False)
 
 
 @app.route("/")
@@ -196,15 +192,6 @@ def sp():
 
     posts = Medicines.query.all()
     return render_template("store.html", params=params, posts=posts)
-
-
-@app.route("/details")
-def details():
-    if 'user' not in session:
-        return redirect("/login")
-
-    posts = Logs.query.all()
-    return render_template("details.html", params=params, posts=posts)
 
 
 @app.route("/edit/<string:mid>", methods=["GET", "POST"])
