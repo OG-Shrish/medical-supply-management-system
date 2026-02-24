@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Expiry Risk Results</h2>
+
+    <table class="table table-bordered text-center">
+    <thead class="thead-dark">
+        <tr>
+            <th>Medicine Name</th>
+            <th>Risk Status</th>
+            <th>Prediction Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in results %}
+        <tr {% if row.risk_flag == 1 %} style="background-color:#f8d7da;" {% endif %}>
+            <td>{{ row.medicine_name }}</td>
+            <td>
+                {% if row.risk_flag == 1 %}
+                    <span class="text-danger font-weight-bold">High Risk</span>
+                {% else %}
+                    <span class="text-success font-weight-bold">Safe</span>
+                {% endif %}
+            </td>
+            <td>{{ row.prediction_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

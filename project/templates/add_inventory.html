@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add Inventory Batch</h2>
+
+    <form action="/add_inventory" method="POST">
+
+        <div class="form-group">
+            <label>Medicine Name</label>
+            <input type="text" name="medicine_name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Quantity Remaining</label>
+            <input type="number" name="quantity" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="date" name="expiry_date" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label>Average Daily Sale</label>
+            <input type="number" step="0.1" name="avg_sale" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">
+            Add Inventory
+        </button>
+
+    </form>
+</div>
+
+{% endblock %}

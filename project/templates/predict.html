@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!-- Navbar spacing -->
+<div style="margin-top:100px"></div>
+
+<div class="container">
+
+<div class="row">
+<div class="col-lg-8 col-md-10 mx-auto text-center">
+
+<h1 class="mb-4">ML Medicine Prediction</h1>
+<p class="lead">Top selling medicines based on previous orders</p>
+
+<hr>
+
+</div>
+</div>
+
+<div class="row justify-content-center">
+<div class="col-lg-10">
+
+<table class="table table-bordered table-hover text-center">
+
+<thead class="thead-dark">
+<tr>
+<th>Medicine Name</th>
+<th>Order Count</th>
+</tr>
+</thead>
+
+<tbody>
+{% for m,c in result %}
+<tr>
+<td>{{m}}</td>
+<td>{{c}}</td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+
+<p class="text-center text-muted mt-3">
+Prediction generated using historical customer order data.
+</p>
+
+</div>
+</div>
+
+</div>
+
+{% endblock %}

@@ -14,11 +14,8 @@ INSERT INTO addmp (medicine) VALUES
 ('Dolo 650'),
 ('Carpel 250 mg'),
 ('Azithromycin 500'),
-('Azithromycin 250'),
 ('Rantac 300'),
-('Omez'),
-('Okacet'),
-('Paracetamol');
+('Paracetamol 500');
 
 -- Products list store karne ke liye table
 
@@ -59,3 +56,24 @@ CREATE TABLE medicines (
   amount INT NOT NULL,
   email VARCHAR(50) NOT NULL
 );
+
+CREATE TABLE inventory_batches (
+  batch_id INT AUTO_INCREMENT PRIMARY KEY,
+  medicine_name VARCHAR(100),
+  quantity_remaining INT,
+  expiry_date DATE,
+  avg_daily_sale FLOAT
+);
+
+CREATE TABLE expiry_alerts (
+  alert_id INT AUTO_INCREMENT PRIMARY KEY,
+  batch_id INT,
+  risk_flag INT,
+  prediction_date DATE
+);
+
+INSERT INTO inventory_batches (medicine_name, quantity_remaining, expiry_date, avg_daily_sale)
+VALUES
+('Dolo 650', 500, '2026-03-10', 20),
+('Paracetamol 500', 200, '2026-02-28', 15),
+('Azithromycin 500', 800, '2026-02-25', 5);
