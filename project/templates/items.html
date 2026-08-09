@@ -1,41 +1,40 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/bg1.jpg') }}')">
-  <div class="overlay"></div>
-  <div class="container">
+<div class="hero-header" style="background-image: url('{{ url_for('static', filename='img/bg1.jpg') }}'); background-size: cover; background-position: center; position: relative;">
+  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7);"></div>
+  <div class="container" style="position: relative; z-index: 1;">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <div class="page-heading">
-          <h1>Available Medicines</h1>
-          <span class="subheading">Medicine master list</span>
-        </div>
+        <h1 class="hero-title">Available Medicines</h1>
+        <p class="hero-subtitle text-white">Medicine master list</p>
       </div>
     </div>
   </div>
-</header>
+</div>
 
-<div class="container mt-4">
-
-<table class="table table-bordered text-center">
-<thead class="thead-dark">
-<tr>
-<th>S.No</th>
-<th>Medicine Name</th>
-</tr>
-</thead>
-
-<tbody>
-{% for post in data %}
-<tr>
-<td>{{ post.sno }}</td>
-<td>{{ post.medicine }}</td>
-</tr>
-{% endfor %}
-</tbody>
-
-</table>
-
+<div class="container mt-5 mb-5">
+  <div class="glass-card">
+    <h3 class="mb-4 text-center" style="color: var(--primary-color);">Medicine Directory</h3>
+    <div class="table-responsive">
+        <table class="table table-hover text-center borderless">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Medicine Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in data %}
+                <tr>
+                    <td><span class="badge badge-primary px-3 rounded-pill">{{ post.sno }}</span></td>
+                    <td class="font-weight-bold text-left pl-5">{{ post.medicine }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

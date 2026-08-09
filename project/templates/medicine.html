@@ -1,71 +1,83 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<header class="masthead" style="background-image: url('{{ url_for('static', filename='img/bg1.jpg') }}')">
-  <div class="overlay"></div>
-  <div class="container">
+<div class="hero-header" style="background-image: url('{{ url_for('static', filename='img/bg1.jpg') }}'); background-size: cover; background-position: center; position: relative;">
+  <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.7);"></div>
+  <div class="container" style="position: relative; z-index: 1;">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <div class="page-heading">
-          <h1>Add Medicine / Product Entry</h1>
-          <span class="subheading">Inventory Management</span>
-        </div>
+        <h1 class="hero-title">Add Entry</h1>
+        <p class="hero-subtitle text-white">Order Medicines and Products</p>
       </div>
     </div>
   </div>
-</header>
+</div>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
-{% for category, message in messages %}
-<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-  {{ message }}
-  <button type="button" class="close" data-dismiss="alert">
-    <span>&times;</span>
-  </button>
+<div class="container mt-4">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
+    {{ message }}
+    <button type="button" class="close text-white" data-dismiss="alert">
+      <span>&times;</span>
+    </button>
+  </div>
+  {% endfor %}
 </div>
-{% endfor %}
 {% endif %}
 {% endwith %}
 
-<div class="container mt-4">
-  <form action="/medicines" method="post">
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="glass-card">
+        <h3 class="mb-4 text-center" style="color: var(--primary-color);">Medicine / Product Entry</h3>
+        <form action="/medicines" method="post">
+          
+          <div class="row">
+            <div class="col-md-6 form-group mb-3">
+              <label>Medical ID</label>
+              <input type="number" name="mid" class="form-control" required>
+            </div>
+            <div class="col-md-6 form-group mb-3">
+              <label>Customer / Store Name</label>
+              <input type="text" name="name" class="form-control" required>
+            </div>
+          </div>
 
-    <div class="form-group">
-      <label>Medical ID</label>
-      <input type="number" name="mid" class="form-control" required>
+          <div class="row">
+            <div class="col-md-6 form-group mb-3">
+              <label>Medicine Name</label>
+              <input type="text" name="medicines" class="form-control" required>
+            </div>
+            <div class="col-md-6 form-group mb-3">
+              <label>Product Name</label>
+              <input type="text" name="products" class="form-control">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 form-group mb-4">
+              <label>Email</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="col-md-6 form-group mb-4">
+              <label>Amount</label>
+              <input type="number" name="amount" class="form-control" min="1" required>
+            </div>
+          </div>
+
+          <div class="text-center mt-2">
+            <button onclick="return confirm('Confirm entry?')" type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm">
+              Add Entry
+            </button>
+          </div>
+
+        </form>
+      </div>
     </div>
-
-    <div class="form-group">
-      <label>Customer / Store Name</label>
-      <input type="text" name="name" class="form-control" required>
-    </div>
-
-    <div class="form-group">
-      <label>Medicine Name</label>
-      <input type="text" name="medicines" class="form-control" required>
-    </div>
-
-    <div class="form-group">
-      <label>Product Name</label>
-      <input type="text" name="products" class="form-control">
-    </div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" name="email" class="form-control" required>
-    </div>
-
-    <div class="form-group">
-      <label>Amount</label>
-      <input type="number" name="amount" class="form-control" min="1" required>
-    </div>
-
-    <button onclick="return confirm('Confirm entry?')" type="submit" class="btn btn-primary">
-      Add Entry
-    </button>
-
-  </form>
+  </div>
 </div>
 
 {% endblock %}
