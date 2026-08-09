@@ -1,34 +1,59 @@
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
 import pickle
-import mysql.connector
+from pathlib import Path
 
-conn = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="medical"
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
+
+MODEL_PATH = Path(__file__).resolve().parent / "expiry_model.pkl"
+
+
+rng = np.random.default_rng(42)
+
+samples = 5000
+
+quantity_remaining = rng.integers(
+    1,
+    5000,
+    samples
 )
 
-query = """
-SELECT 
-    batch_id,
-    quantity_remaining,
-    DATEDIFF(expiry_date, CURDATE()) AS days_left,
-    avg_daily_sale
-FROM inventory_batches
-"""
+days_left = rng.integers(
+    -30,
+    365,
+    samples
+)
 
-df = pd.read_sql(query, conn)
+avg_daily_sale = rng.uniform(
+    0.5,
+    100,
+    samples
+)
 
-df['expected_days_to_sell'] = df['quantity_remaining'] / df['avg_daily_sale']
-df['risk'] = (df['expected_days_to_sell'] > df['days_left']).astype(int)
+expected_days_to_sell = (
+    quantity_remaining / avg_daily_sale
+)
 
-X = df[['quantity_remaining', 'days_left', 'avg_daily_sale']]
-y = df['risk']
+risk = (
+    expected_days_to_sell > days_left
+).astype(int)
 
-model = LogisticRegression()
-model.fit(X, y)
+X = np.column_stack(
+    [
+        quantity_remaining,
+        days_left,
+        avg_daily_sale
+    ]
+)
 
-pickle.dump(model, open("expiry_model.pkl", "wb"))
-print("Model trained and saved")
+model = LogisticRegression(
+    max_iter=1000,
+    random_state=42
+)
+
+model.fit(X, risk)
+
+with open(MODEL_PATH, "wb") as file:
+    pickle.dump(model, file)
+
+print(f"Model saved to {MODEL_PATH}")
