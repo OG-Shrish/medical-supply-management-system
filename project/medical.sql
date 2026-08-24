@@ -1,5 +1,5 @@
 CREATE TABLE addmp (
-    sno SERIAL PRIMARY KEY,
+    sno INT AUTO_INCREMENT PRIMARY KEY,
     medicine VARCHAR(500) NOT NULL
 );
 
@@ -12,7 +12,7 @@ INSERT INTO addmp (medicine) VALUES
 
 
 CREATE TABLE addpd (
-    sno SERIAL PRIMARY KEY,
+    sno INT AUTO_INCREMENT PRIMARY KEY,
     product VARCHAR(200) NOT NULL
 );
 
@@ -23,7 +23,7 @@ INSERT INTO addpd (product) VALUES
 
 
 CREATE TABLE posts (
-    mid SERIAL PRIMARY KEY,
+    mid INT AUTO_INCREMENT PRIMARY KEY,
     medical_name VARCHAR(100) NOT NULL,
     owner_name VARCHAR(100) NOT NULL,
     phone_no VARCHAR(20) NOT NULL,
@@ -45,7 +45,7 @@ VALUES (
 
 
 CREATE TABLE medicines (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     mid VARCHAR(50) NOT NULL,
     name VARCHAR(100) NOT NULL,
     medicines VARCHAR(500) NOT NULL,
