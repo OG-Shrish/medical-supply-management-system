@@ -4,17 +4,11 @@ from datetime import date, datetime
 from flask import Flask, flash, redirect, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
-from ml_utils import predict_risk
-
-
 app = Flask(__name__)
 
 app.secret_key = os.getenv("SECRET_KEY", "development-secret-key")
 
-database_url = os.getenv("DATABASE_URL")
-
-if not database_url:
-    raise RuntimeError("DATABASE_URL environment variable is not configured")
+database_url = os.getenv("DATABASE_URL", "sqlite:///medical.db")
 
 if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql+psycopg://", 1)
@@ -68,28 +62,6 @@ class Addpd(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     product = db.Column(db.String(200), nullable=False)
 
-
-class InventoryBatch(db.Model):
-    __tablename__ = "inventory_batches"
-
-    batch_id = db.Column(db.Integer, primary_key=True)
-    medicine_name = db.Column(db.String(100), nullable=False)
-    quantity_remaining = db.Column(db.Integer, nullable=False)
-    expiry_date = db.Column(db.Date, nullable=False)
-    avg_daily_sale = db.Column(db.Float, nullable=False)
-
-
-class ExpiryAlert(db.Model):
-    __tablename__ = "expiry_alerts"
-
-    alert_id = db.Column(db.Integer, primary_key=True)
-    batch_id = db.Column(
-        db.Integer,
-        db.ForeignKey("inventory_batches.batch_id"),
-        nullable=False
-    )
-    risk_flag = db.Column(db.Integer, nullable=False)
-    prediction_date = db.Column(db.Date, nullable=False)
 
 
 @app.route("/")
@@ -173,29 +145,6 @@ def search():
     return render_template("search.html", params=params)
 
 
-@app.route("/expiry_results")
-def expiry_results():
-    results = (
-        db.session.query(
-            InventoryBatch.medicine_name,
-            ExpiryAlert.risk_flag,
-            ExpiryAlert.prediction_date
-        )
-        .join(
-            ExpiryAlert,
-            InventoryBatch.batch_id == ExpiryAlert.batch_id
-        )
-        .order_by(ExpiryAlert.prediction_date.desc())
-        .all()
-    )
-
-    return render_template(
-        "expiry_results.html",
-        results=results,
-        params=params
-    )
-
-
 @app.route("/addmp", methods=["POST"])
 def addmp():
     medicine = request.form.get("medicine", "").strip()
@@ -240,106 +189,12 @@ def items2():
     )
 
 
-@app.route("/check_expiry")
-def check_expiry():
-    batches = InventoryBatch.query.all()
-
-    for batch in batches:
-        risk_value = predict_risk(
-            batch.quantity_remaining,
-            batch.expiry_date,
-            batch.avg_daily_sale
-        )
-
-        alert = ExpiryAlert.query.filter_by(
-            batch_id=batch.batch_id
-        ).first()
-
-        if alert:
-            alert.risk_flag = risk_value
-            alert.prediction_date = date.today()
-        else:
-            db.session.add(
-                ExpiryAlert(
-                    batch_id=batch.batch_id,
-                    risk_flag=risk_value,
-                    prediction_date=date.today()
-                )
-            )
-
-    db.session.commit()
-
-    flash("Expiry Risk Prediction Completed", "success")
-
-    return redirect("/expiry_results")
-
-
-@app.route("/add_inventory", methods=["POST"])
-def add_inventory():
-    try:
-        quantity = int(request.form.get("quantity", 0))
-        avg_sale = float(request.form.get("avg_sale", 0))
-        expiry_date = datetime.strptime(
-            request.form.get("expiry_date"),
-            "%Y-%m-%d"
-        ).date()
-
-        if quantity < 0 or avg_sale < 0:
-            raise ValueError
-
-        batch = InventoryBatch(
-            medicine_name=request.form.get(
-                "medicine_name",
-                ""
-            ).strip(),
-            quantity_remaining=quantity,
-            expiry_date=expiry_date,
-            avg_daily_sale=avg_sale
-        )
-
-        db.session.add(batch)
-        db.session.flush()
-
-        risk_value = predict_risk(
-            quantity,
-            expiry_date,
-            avg_sale
-        )
-
-        db.session.add(
-            ExpiryAlert(
-                batch_id=batch.batch_id,
-                risk_flag=risk_value,
-                prediction_date=date.today()
-            )
-        )
-
-        db.session.commit()
-
-        flash(
-            "Inventory added & risk predicted automatically",
-            "success"
-        )
-
-    except (ValueError, TypeError):
-        db.session.rollback()
-        flash("Invalid inventory data", "danger")
-
-    return redirect("/")
-
-
-@app.route("/inventory")
-def inventory_page():
-    return render_template(
-        "add_inventory.html",
-        params=params
-    )
-
-
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
